@@ -3,7 +3,7 @@ substitutions:
   _TERRAFORM_VERSION: '0.12.26'
   _APP: 'demo'
   _ENV: 'nonprod-build'        #ENV are controlled by substitution in cloudbuild to target different environments (np/sandpit/dev01/e2e3)
-  _TF_LOG: ''
+  _TF_LOG: 'DEBUG'
 #options:
     #workerPool: ${_WORKER}
 tags:

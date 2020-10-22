@@ -2,7 +2,7 @@
 
 set -exuo pipefail
 
-./bin/terraform-init.sh
+sh /bin/terraform-init.sh
 
 cd env/${ENV}
 
