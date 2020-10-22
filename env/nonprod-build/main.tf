@@ -1,4 +1,8 @@
 # Bootstrap Nonprod Build Project
+terraform {
+  backend "local" {}
+}
+
 module nonprod-build {
   source            = "github.com/kewei5zhang/terraform-gcp-module//bootstrap-cloudbuild?ref=master"
   build_project_id  = var.build_project_id
