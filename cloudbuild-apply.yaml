@@ -13,7 +13,7 @@ tags:
 steps:
   - id: validate
     name: ${_TERRAFORM_IMAGE}:${_TERRAFORM_VERSION}
-    entrypoint: bash
+    entrypoint: sh
     env:
       - ENV=${_ENV}
       - APP=${_APP}
@@ -24,7 +24,7 @@ steps:
       - bin/terraform-validate.sh
   - id: plan
     name: ${_TERRAFORM_IMAGE}:${_TERRAFORM_VERSION}
-    entrypoint: bash
+    entrypoint: sh
     env:
       - ENV=${_ENV}
       - APP=${_APP}
@@ -39,7 +39,7 @@ steps:
     name: ${_TERRAFORM_IMAGE}:${_TERRAFORM_VERSION}
     waitFor:
       - plan
-    entrypoint: bash
+    entrypoint: sh
     env:
       - ENV=${_ENV}
       - TIER=${_TIER}
