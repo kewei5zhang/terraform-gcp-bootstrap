@@ -1,4 +1,4 @@
 variable build_project_id {}
-variable env_list {}
+variable env_names {}
 variable build_env {}
 variable substitution_vars {}

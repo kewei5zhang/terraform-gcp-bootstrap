@@ -1,0 +1,10 @@
+.DS_Store
+**/.env/*
+**.log
+**.tfplan
+**.tfstate
+**/.terraform/
+*.zip
+*.tar.gz
+*.swp
+
