@@ -16,12 +16,23 @@ steps:
     entrypoint: sh
     env:
       - ENV=${_ENV}
-      - APP=${_TIER}
+      - APP=${_APP}
       - PROJECT_ID=${PROJECT_ID}
     args:
       - -exuo
       - pipefail
       - bin/terraform-validate.sh
+  - id: lint
+    name: wata727/tflint:latest
+    entrypoint: sh
+    env:
+      - ENV=${_ENV}
+      - APP=${_APP}
+      - PROJECT_ID=${PROJECT_ID}
+    args:
+      - -exuo
+      - pipefail
+      - bin/terraform-lint.sh
   - id: plan
     name: ${_TERRAFORM_IMAGE}:${_TERRAFORM_VERSION}
     entrypoint: sh
