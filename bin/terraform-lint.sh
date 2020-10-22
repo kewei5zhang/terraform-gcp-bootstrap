@@ -4,4 +4,4 @@ set -exuo pipefail
 
 cd env/${ENV}
 
-tflint -f json
+tflint --disable-rule=terraform_module_pinned_source
