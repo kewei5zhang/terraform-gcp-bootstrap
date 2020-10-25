@@ -1,6 +1,6 @@
 # Bootstrap Nonprod Build Project
-module nonprod-build {
-  source            = "github.com/kewei5zhang/terraform-gcp-module//bootstrap-cloudbuild?ref=master"
+module bootstrap-cloudbuild {
+  source            = "github.com/kewei5zhang/terraform-gcp-module.git//bootstrap-cloudbuild/module?ref=dev-v0.0.1"
   build_project_id  = var.build_project_id
   env_names         = var.env_names
   substitution_vars = var.substitution_vars

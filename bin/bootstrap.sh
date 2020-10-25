@@ -28,7 +28,7 @@ gcloud config set project ${BUILD_PROJECT_ID}
 
 # Enable the required APIs
 echo "Enable the required APIs"
-gcloud services enable cloudbuild.googleapis.com compute.googleapis.com
+gcloud services enable cloudresourcemanager.googleapis.com cloudbuild.googleapis.com compute.googleapis.com
 
 # Configure Terraform backend
 echo "Configure Terraform backend to Cloud Storage Bucket - ${BUILD_PROJECT_ID}-tfstate"
