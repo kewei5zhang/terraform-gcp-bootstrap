@@ -10,7 +10,7 @@ module bootstrap-cloudbuild {
 # Create Module CI Cloudbuild trigger for unit-testing based on feature branch
 resource google_cloudbuild_trigger module_dry_run {
   provider    = google-beta
-  for_each    = fileset(path.module, "*")
+  for_each    = fileset("../../${path.module}", "*")
   description = "module ${each.value} - dry run"
   project     = var.build_project_id
   github {
