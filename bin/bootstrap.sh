@@ -10,7 +10,13 @@ eval "$env_cli"
 # Validate bootstrap config
 read -p "Is this your Build Project ID? ${BUILD_PROJECT_ID} [y/n]" yn
 if [[ $yn = [Yy] ]]; then
-	read -p "Is this your github Repo Name? ${REPO_NAME} [y/n]" yn
+	read -p "Is this your github Pipeline Bootstrap Repo Name? ${BOOTSTRAP_REPO_NAME} [y/n]" yn
+else 
+	echo "Bootstrap Abort!"
+	exit 1
+fi
+if [[ $yn = [Yy] ]]; then
+	read -p "Is this your github Terraform Module Repo Name? ${MODULE_REPO_NAME} [y/n]" yn
 else 
 	echo "Bootstrap Abort!"
 	exit 1
@@ -49,7 +55,7 @@ gcloud projects add-iam-policy-binding $BUILD_PROJECT_ID \
 		--member serviceAccount:$CLOUDBUILD_SA --role roles/editor
 
 # Create Bootstrap Triggers
-REPO_NAME=${REPO_NAME}
+BOOTSTRAP_REPO_NAME=${BOOTSTRAP_REPO_NAME}
 REPO_OWNER=${REPO_OWNER}
 # Plan Trigger
 BRANCH_PATTERN="feature/*"
@@ -57,7 +63,7 @@ DESCRIPTION="TF-Bootstrap-Plan"
 BUILD_CONFIG="cloudbuild-plan.yaml"
 CLOUDBUILD_STATUS=$(gcloud beta builds triggers list --filter=name=${DESCRIPTION})
 if [[ -z ${CLOUDBUILD_STATUS} ]]; then
-	gcloud beta builds triggers create github --repo-name=${REPO_NAME} --repo-owner=${REPO_OWNER} --description=${DESCRIPTION} --branch-pattern=${BRANCH_PATTERN} --build-config=${BUILD_CONFIG}
+	gcloud beta builds triggers create github --repo-name=${BOOTSTRAP_REPO_NAME} --repo-owner=${REPO_OWNER} --description=${DESCRIPTION} --branch-pattern=${BRANCH_PATTERN} --build-config=${BUILD_CONFIG}
 else
 	echo "${DESCRIPTION} trigger already exists"
 fi
@@ -67,11 +73,25 @@ DESCRIPTION="TF-Bootstrap-Apply"
 BUILD_CONFIG="cloudbuild-apply.yaml"
 CLOUDBUILD_STATUS=$(gcloud beta builds triggers list --filter=name=${DESCRIPTION})
 if [[ -z ${CLOUDBUILD_STATUS} ]]; then
-	gcloud beta builds triggers create github --repo-name=${REPO_NAME} --repo-owner=${REPO_OWNER} --description=${DESCRIPTION} --branch-pattern=${BRANCH_PATTERN} --build-config=${BUILD_CONFIG}
+	gcloud beta builds triggers create github --repo-name=${BOOTSTRAP_REPO_NAME} --repo-owner=${REPO_OWNER} --description=${DESCRIPTION} --branch-pattern=${BRANCH_PATTERN} --build-config=${BUILD_CONFIG}
 else
 	echo "${DESCRIPTION} trigger already exists"
 fi
 
+# Create Module Triggers for Bootstrap Module
+MODULE_REPO_NAME=${MODULE_REPO_NAME}
+REPO_OWNER=${REPO_OWNER}
+# Plan Trigger
+MODULE="bootstrap-cloudbuild"
+BRANCH_PATTERN="feature/${MODULE}*"
+DESCRIPTION="Module-${MODULE}-Dry-Run"
+BUILD_CONFIG="cloudbuild/cloudbuild-dry-run.yaml"
+CLOUDBUILD_STATUS=$(gcloud beta builds triggers list --filter=name=${DESCRIPTION})
+if [[ -z ${CLOUDBUILD_STATUS} ]]; then
+	gcloud beta builds triggers create github --repo-name=${MODULE_REPO_NAME} --repo-owner=${REPO_OWNER} --description=${DESCRIPTION} --branch-pattern=${BRANCH_PATTERN} --build-config=${BUILD_CONFIG} --substitutions=_MODULE=${MODULE}
+else
+	echo "${DESCRIPTION} trigger already exists"
+fi
 
 
 

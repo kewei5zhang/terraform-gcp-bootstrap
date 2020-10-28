@@ -7,9 +7,7 @@ substitutions:
 #options:
     #workerPool: ${_WORKER}
 tags:
-  - psp-infra
-  - psp-infra-terraform-plan
-  - github_status_Terraform_plan_in_${PROJECT_ID}
+  - tf-bootstrap 
 steps:
   - id: validate
     name: ${_TERRAFORM_IMAGE}:${_TERRAFORM_VERSION}
