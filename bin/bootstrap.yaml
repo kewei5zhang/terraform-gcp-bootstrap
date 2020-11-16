@@ -1,4 +1,5 @@
 BUILD_PROJECT_ID: kewei-demo-sandbox
-REPO_NAME: terraform-gcp-bootstrap
+BOOTSTRAP_REPO_NAME: terraform-gcp-bootstrap
+MODULE_REPO_NAME: terraform-gcp-module
 REPO_OWNER: kewei5zhang
 
