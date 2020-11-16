@@ -51,7 +51,7 @@ steps:
     entrypoint: sh
     env:
       - ENV=${_ENV}
-      - TIER=${_TIER}
+      - APP=${_APP}
       - BRANCH_NAME=${BRANCH_NAME}
       - TF_LOG=${_TF_LOG}
       - PROJECT_ID=${PROJECT_ID}
