@@ -1,2 +1,2 @@
-# terraform-gcp-foundation
-Terraform repository that manages GCP resources in each environment
+# terraform-gcp-bootstrap
+Terraform code and scripts that helps bootstrap cloudbuild setup in gcp

@@ -1,0 +1,47 @@
+substitutions:
+  _TERRAFORM_IMAGE: 'hashicorp/terraform'
+  _TERRAFORM_VERSION: '0.12.26'
+  _APP: 'demo'
+  _ENV: 'nonprod-build'        #ENV are controlled by substitution in cloudbuild to target different environments (np/sandpit/dev01/e2e3)
+  _TF_LOG: 'DEBUG'
+#options:
+    #workerPool: ${_WORKER}
+tags:
+  - tf-bootstrap 
+steps:
+  - id: validate
+    name: ${_TERRAFORM_IMAGE}:${_TERRAFORM_VERSION}
+    entrypoint: sh
+    env:
+      - ENV=${_ENV}
+      - APP=${_APP}
+      - PROJECT_ID=${PROJECT_ID}
+    args:
+      - -exuo
+      - pipefail
+      - bin/terraform-validate.sh
+  - id: lint
+    name: wata727/tflint:latest
+    entrypoint: sh
+    env:
+      - ENV=${_ENV}
+      - APP=${_APP}
+      - PROJECT_ID=${PROJECT_ID}
+    args:
+      - -exuo
+      - pipefail
+      - bin/terraform-lint.sh
+  - id: plan
+    name: ${_TERRAFORM_IMAGE}:${_TERRAFORM_VERSION}
+    entrypoint: sh
+    env:
+      - ENV=${_ENV}
+      - APP=${_APP}
+      - BRANCH_NAME=${BRANCH_NAME}
+      - TF_LOG=${_TF_LOG}
+      - PROJECT_ID=${PROJECT_ID}
+    args:
+      - -exuo
+      - pipefail
+      - bin/terraform-plan.sh
+timeout: 2400s
