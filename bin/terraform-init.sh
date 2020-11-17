@@ -7,7 +7,7 @@ cd env/${ENV}
 terraform get -update
 
 terraform init \
-	-backend-config="bucket=${PROJECT_ID}-statefile" \
+	-backend-config="bucket=${PROJECT_ID}-tfstate" \
 	-backend-config="prefix=${APP}-${ENV}" \
 	-reconfigure \
 	-get=false \
