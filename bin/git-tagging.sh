@@ -5,7 +5,7 @@ VERSION='patch'
 
 case $ENV in
 	"dev" ) tag_prefix="dev_v" ;;
-	"qa" ) tag_prefix="dev_v" ;;
+	"qa" ) tag_prefix="qa_v" ;;
 	"prod" ) tag_prefix="v" ;;
 esac
 
@@ -17,7 +17,7 @@ tag_update () {
 
 	if [[ $CURRENT_VERSION == '' ]];
 	then
-	CURRENT_VERSION="${tag_prefix}1.0.0"
+	CURRENT_VERSION="1.0.0"
 	fi
 
 	echo "Current Version: $CURRENT_VERSION"
@@ -44,7 +44,7 @@ tag_update () {
 
 	# create new tag
 	NEW_TAG="${tag_prefix}$VNUM1.$VNUM2.$VNUM3"
-	echo "($VERSION) updating $CURRENT_VERSION to $NEW_TAG"
+	echo "($VERSION) updating ${tag_prefix}$CURRENT_VERSION to $NEW_TAG"
 
 	# get current hash and see if it already has a tag
 	GIT_COMMIT=$(git rev-parse HEAD)
@@ -97,7 +97,7 @@ esac
 
 tag_update () {
 	# get highest tag number, and add 1.0.0 if doesn't exist
-	git remote set-url origin git@github.com:kewei5zhang/terraform-gcp-bootstrap
+	git remote set-url origin git@github.com:$REPO_OWNER/$REPO_NAME
 	git fetch --unshallow
 	CURRENT_VERSION=$(git describe --abbrev=0 --tags | grep $tag_prefix 2>/dev/null)
 
@@ -205,7 +205,7 @@ fi
 	# only tag if no tag already
 	if [ -z "$NEEDS_TAG" ]; then
 		# set git identity
-		git config --global user.name "kewei5zhang" 
+		git config --global user.name $REPO_OWNER 
     	git config --global user.email "keweizhang411@gmail.com" 
 		git tag -a $NEW_TAG -m "module update in $module_name, tag version $NEW_TAG"
 		echo "Tagged with $NEW_TAG"

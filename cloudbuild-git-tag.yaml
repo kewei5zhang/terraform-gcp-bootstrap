@@ -1,6 +1,7 @@
 substitutions:
   _TERRAFORM_IMAGE: 'hashicorp/terraform'
   _TERRAFORM_VERSION: '0.12.26'
+  _REPO_OWNER: kewei5zhang
   _ENV: 'sandpit'
   _MODULE: ''
   _TF_LOG: ''
@@ -37,6 +38,8 @@ steps:
       - MODULE=${_MODULE}
       - PROJECT_ID=${PROJECT_ID}
       - BRANCH_NAME=${BRANCH_NAME}
+      - REPO_OWNER=${_REPO_OWNER}
+      - REPO_NAME=${REPO_NAME}
     args:
       - cloudbuild/bin/git-tagging.sh
     volumes:
