@@ -7,7 +7,8 @@
 #REPO_OWNER="kewei5zhang"
 
 # Parse bootstrap config
-read_config="sed -e 's/:[^:\/\/]/=\"/g;s/$/\"/g;s/ *=/=/g' bootstrap.yaml;"
+MY_PATH="`dirname \"$0\"`"
+read_config="sed -e 's/:[^:\/\/]/=\"/g;s/$/\"/g;s/ *=/=/g' $MY_PATH/bootstrap.yaml;"
 env_var=$(eval "$read_config")
 env_cli=$(echo $env_var | sed -e 's/^"//' -e 's/"$//')
 eval "$env_cli"
@@ -66,7 +67,7 @@ BOOTSTRAP_REPO_NAME=${BOOTSTRAP_REPO_NAME}
 REPO_OWNER=${REPO_OWNER}
 # Plan Trigger
 BRANCH_PATTERN="feature/*"
-DESCRIPTION="TF-Bootstrap-Plan"
+DESCRIPTION="tf-bootstrap-plan"
 BUILD_CONFIG="cloudbuild-plan.yaml"
 CLOUDBUILD_STATUS=$(gcloud beta builds triggers list --filter=name=${DESCRIPTION})
 if [[ -z ${CLOUDBUILD_STATUS} ]]; then
@@ -76,7 +77,7 @@ else
 fi
 # Apply Trigger
 BRANCH_PATTERN="^master$"
-DESCRIPTION="TF-Bootstrap-Apply"
+DESCRIPTION="tf-bootstrap-apply"
 BUILD_CONFIG="cloudbuild-apply.yaml"
 CLOUDBUILD_STATUS=$(gcloud beta builds triggers list --filter=name=${DESCRIPTION})
 if [[ -z ${CLOUDBUILD_STATUS} ]]; then
@@ -91,7 +92,7 @@ REPO_OWNER=${REPO_OWNER}
 # Plan Trigger
 MODULE="bootstrap-cloudbuild"
 BRANCH_PATTERN="feature/${MODULE}*"
-DESCRIPTION="Module-${MODULE}-Dry-Run"
+DESCRIPTION="tf-module-${MODULE}-dry-run"
 BUILD_CONFIG="cloudbuild/cloudbuild-dry-run.yaml"
 CLOUDBUILD_STATUS=$(gcloud beta builds triggers list --filter=name=${DESCRIPTION})
 if [[ -z ${CLOUDBUILD_STATUS} ]]; then
@@ -105,7 +106,7 @@ MODULE_REPO_NAME=${MODULE_REPO_NAME}
 REPO_OWNER=${REPO_OWNER}
 # Plan Trigger
 BRANCH_PATTERN="master"
-DESCRIPTION="Module-Git-Tag-Release"
+DESCRIPTION="tf-module-git-tag-release"
 BUILD_CONFIG="cloudbuild/cloudbuild-git-tag.yaml"
 CLOUDBUILD_STATUS=$(gcloud beta builds triggers list --filter=name=${DESCRIPTION})
 if [[ -z ${CLOUDBUILD_STATUS} ]]; then
